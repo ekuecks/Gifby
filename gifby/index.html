@@ -4,7 +4,6 @@
 
     <link rel="stylesheet" href="../lib/codemirror.css"></link>
     <link rel="stylesheet" href="../common.css"></link>
-    <link rel="stylesheet" href="../tests.css"></link>
     <link rel="stylesheet" href="../playground.css"></link>
     <link rel="stylesheet" href="syntax-highlighting.css"></link>
 
@@ -29,8 +28,8 @@ O {
     = Stmt*
 
   Stmt
-    = CLICK string                                                          -- click
-    | FILL string                                                           -- fill
+    = click string                                                          -- click
+    | fill string                                                           -- fill
 
   // Lexical rules
 
@@ -46,6 +45,9 @@ O {
 
   tokens
     = (string | comment | any)*
+
+  click = "CLICK" ~alnum
+  fill = "FILL" ~alnum
 
 }
 
@@ -307,7 +309,6 @@ O {
           </table>
         </p>
         <note style="position: relative; width: 450px; float: right; margin-left: 10pt; margin-right: -200px;">
-          <img src="dude.png" width="250">
           <div style="position: absolute; left: 210px; top: 10px; padding-right: 10pt;">
             <div style="display: inline-block; width: 65px; height: 70px; float: left;"></div>
             If you&rsquo;re not under the influence of a controlled substance (like these guys
@@ -358,9 +359,7 @@ O.transAST = trans;
         <p>
           We have included some unit tests for your translator below. As in the previous
           assignments, you can add your own test cases by editing
-          <a href="hw4-tests.js"><code>hw4-tests.js</code></a>.
         </p>
-        <script src="hw4-tests.js"></script>
       </section>
       <section>
         <sectionHeader>
@@ -408,7 +407,6 @@ O.transAST = trans;
           possible:
           <ul>
             <li>
-              <img style="display: inline-block; width: 200px; float: right; margin-right: -220px;" src="hierarchy.png">
               Introduce classes for the primitive values, as illustrated in the diagram to the
               right. (<code>Num</code> is the class of all numbers, <code>Null</code> the class of
               <code>null</code>, and so on.)</li>
@@ -435,9 +433,7 @@ O.transAST = trans;
             </li>
           </ul>
           Here are a few unit tests for this part of the assignment. To add your own test cases,
-          just edit <a href="hw5-tests-part1.js"><code>hw5-tests-part1.js</code></a>.
         </p>
-        <script src="hw5-tests-part1.js"></script>
         <h3 style="margin-top: 20pt;">Part II: Blocks</h3>
         <p>
           Borrowing from <a href="http://en.wikipedia.org/wiki/Smalltalk">Smalltalk</a>, our
@@ -606,9 +602,7 @@ new Object().m();  <comment>// evaluates to 5</comment></codeBlock>
         </p>
         <p>
           Here are a few unit tests for this part of the assignment. To add your own test cases,
-          just edit <a href="hw5-tests-part2.js"><code>hw5-tests-part2.js</code></a>.
         </p>
-        <script src="hw5-tests-part2.js"></script>
       </section>
       <section>
         <sectionHeader>
