@@ -20,21 +20,8 @@ function toggleSidebar() {
     else {
         var sidebar = document.createElement('div');
         sidebar.id = "mySidebar";
-        sidebar.innerHTML = "<h1>Giffby</h1>";
-        sidebar.style.cssText = "\
-        position:fixed;\
-        bottom:0px;\
-        left:0px;\
-        width:100%;\
-        height:40%;\
-        background:white;\
-        border-style: solid;\
-        border-top: solid #000000;\
-        border-left: solid #ffffff;\
-        border-right: solid #ffffff;\
-        border-bottom: solid #ffffff;\
-        z-index:999999;\
-        ";
+        sidebar.innerHTML = window.mainViewHtml;
+        sidebar.style.cssText = window.mainViewCss;
         document.body.appendChild(sidebar);
         sidebarOpen = true;
     }
