@@ -19,6 +19,20 @@ class Stmt extends AST {
   }
 }
 
+class Click extends Stmt {
+  constructor(id) {
+    super();
+    this.id = id;
+  }
+}
+
+class Fill extends Stmt {
+  constructor(text) {
+    super();
+    this.text = text;
+  }
+}
+
 class ClassDecl extends Stmt {
   constructor(C, S, xs) {
     super();

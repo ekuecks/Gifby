@@ -1,16 +1,6 @@
 'use strict';
 
-var _blocks = 0;
-var _level = 1;
 
-class _BlockThrow extends Stmt {
-  constructor(e, b) {
-    super();
-    this.e = e;
-    this.b = b;
-  }
-}
-var _classes = {}
 
 Program.prototype.trans = function() {
   var res = "";
