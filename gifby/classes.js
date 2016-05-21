@@ -22,13 +22,14 @@ class Stmt extends AST {
 class Click extends Stmt {
   constructor(id) {
     super();
-    this.id = id;
+    this.id = id.interval.contents.substring(1, id.interval.contents.length - 1);
   }
 }
 
 class Fill extends Stmt {
-  constructor(text) {
+  constructor(id, text) {
     super();
-    this.text = text;
+    this.id = id.interval.contents.substring(1, id.interval.contents.length - 1);
+    this.text = text.interval.contents.substring(1, text.interval.contents.length - 1);
   }
 }
