@@ -16,8 +16,8 @@ var O = new Language(g, g.semantics().addOperation('toAST', {
     return new Click(id);
   },
 
-  Stmt_fill: function(_fill, text) {
-    return new Fill(text);
+  Stmt_fill: function(_fill, id, text) {
+    return new Fill(id, text);
   },
 
   string: function(_oq, cs, _cq) {
