@@ -9,7 +9,7 @@ Program.prototype.trans = function() {
 }
 
 Click.prototype.trans = function() {
-  return "click(" + this.id +")";
+  return "$(\"" + this.id +"\").trigger(\"click\")";
 }
 
 Fill.prototype.trans = function() {
@@ -17,5 +17,5 @@ Fill.prototype.trans = function() {
 }
 
 function trans(ast) {
-  return "function click(el){\nvar ev = document.createEvent(\"MouseEvent\");\nev.initMouseEvent(\n\"click\",\ntrue /* bubble */, true /* cancelable */,\nwindow, null,\n0, 0, 0, 0, /* coordinates */\nfalse, false, false, false, /* modifier keys */\n0 /*left*/, null\n);\nel.dispatchEvent(ev);\n}" + ast.trans();
+  return ast.trans();
 }
