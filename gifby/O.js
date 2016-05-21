@@ -8,8 +8,7 @@ var O = new Language(g, g.semantics().addOperation('toAST', {
   },
 
   Stmts: function(ss) {
-    var e = optE.toAST()[0];
-    return ss.toAST().concat(e ? new ExpStmt(e) : []);
+    return ss.toAST().concat([]);
   },
 
   Stmt_click: function(_fill, id) {
