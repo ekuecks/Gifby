@@ -9,11 +9,11 @@ Program.prototype.trans = function() {
 }
 
 Click.prototype.trans = function() {
-  return "$(\"" + this.id +"\").trigger(\"click\")";
+  return "$('#" + this.id +"').trigger('click')";
 }
 
 Fill.prototype.trans = function() {
-  return "$('" + this.id + "').val(\"" + this.text + "\")";
+  return "$('#" + this.id + "').val('" + this.text + "')";
 }
 
 function trans(ast) {
