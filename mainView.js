@@ -1,5 +1,20 @@
 window.mainViewHtml = `
-<h1>Giffy</h1>
+<div style='margin-left: 20px; margin-top:10px'>
+    <div style='width: 800px'>
+        <div>
+        <b><font size='5'>Giffy</font></b>
+        <span style='position:fixed; right: 10px'>
+            <button class='button-error pure-button' id='record'>Record</button>
+            <button class='pure-button' id='stop'>Stop</button>
+        </span>
+        </div>
+        <div class="pure-g">
+            <div class="pure-u-1-3"><p>Thirds</p></div>
+            <div class="pure-u-1-3"><p>Thirds</p></div>
+            <div class="pure-u-1-3"><p>Thirds</p></div>
+        </div>
+    </div>
+</div>
 `;
 window.mainViewCss = `
     position:fixed;
