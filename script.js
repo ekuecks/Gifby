@@ -9,21 +9,32 @@ function handleRequest(
 
 chrome.extension.onRequest.addListener(handleRequest);
 
+window.state = {};
+window.state.sidebarOpen = false;
+
 /*Small function wich create a sidebar(just to illustrate my point)*/
-var sidebarOpen = false;
 function toggleSidebar() {
-    if(sidebarOpen) {
-        var el = document.getElementById('mySidebar');
-            el.parentNode.removeChild(el);
-            sidebarOpen = false;
+    if(window.state.sidebarOpen) {
+        hideSidebar();
     }
     else {
-        var sidebar = document.createElement('div');
-        sidebar.id = "mySidebar";
-        sidebar.innerHTML = '<style>' + window.bootstrap + '</style>' + 
-                            window.mainViewHtml;
-        sidebar.style.cssText = window.mainViewCss;
-        document.body.appendChild(sidebar);
-        sidebarOpen = true;
+        showSidebar();
     }
+}
+
+function hideSidebar(){
+    var el = document.getElementById('mySidebar');
+        el.parentNode.removeChild(el);
+        window.state.sidebarOpen = false;
+}
+
+function showSidebar(){
+    var sidebar = document.createElement('div');
+    sidebar.id = "mySidebar";
+    sidebar.innerHTML = '<style>' + window.bootstrap + '</style>' + 
+                        window.mainViewHtml;
+    sidebar.style.cssText = window.mainViewCss;
+    document.body.appendChild(sidebar);
+    window.state.sidebarOpen = true;
+
 }

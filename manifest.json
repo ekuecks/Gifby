@@ -19,6 +19,7 @@
                  "bootstrapCss.js", "main.js"]
   }],
   "permissions": [
+    "storage",
     "tabs",
     "activeTab",
     "https://ajax.googleapis.com/"
