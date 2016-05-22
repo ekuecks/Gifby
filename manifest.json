@@ -15,7 +15,8 @@
   "content_scripts": [
   {
       "matches": ["<all_urls>"],
-          "js": ["mainView.js","script.js"]
+          "js": ["background.js", "mainView.js","script.js","lib/jquery-2.1.1.min.js",
+                 "bootstrapCss.js", "main.js"]
   }],
   "permissions": [
     "tabs",

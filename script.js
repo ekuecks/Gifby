@@ -20,7 +20,8 @@ function toggleSidebar() {
     else {
         var sidebar = document.createElement('div');
         sidebar.id = "mySidebar";
-        sidebar.innerHTML = window.mainViewHtml;
+        sidebar.innerHTML = '<style>' + window.bootstrap + '</style>' + 
+                            window.mainViewHtml;
         sidebar.style.cssText = window.mainViewCss;
         document.body.appendChild(sidebar);
         sidebarOpen = true;
