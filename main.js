@@ -25,5 +25,7 @@ function restoreState(){
 restoreState();
 
 $('html').click(function(e){
-    saveState();
+    if(e.target.nodeName == "A"){
+        saveState();
+    }
 });
