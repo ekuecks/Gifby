@@ -11,6 +11,11 @@ var O = new Language(g, g.semantics().addOperation('toAST', {
     return ss.toAST().concat([]);
   },
 
+  Stmt_goto: function(_goto, str) {
+    str = str.interval.contents.substring(1, str.interval.contents.length - 1);
+    return new Goto(str);
+  },
+
   Stmt_click: function(_fill, str) {
     str = str.interval.contents.substring(1, str.interval.contents.length - 1);
     if(str.indexOf("ID:") > -1) {

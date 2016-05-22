@@ -8,6 +8,10 @@ Program.prototype.trans = function() {
   return res;
 }
 
+Goto.prototype.trans = function() {
+  return "window.location.href = \"" + this.url + "\"";
+}
+
 ClickByID.prototype.trans = function() {
   return "$('#" + this.id +"').trigger('click')";
 }

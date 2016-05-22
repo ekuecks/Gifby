@@ -19,6 +19,13 @@ class Stmt extends AST {
   }
 }
 
+class Goto extends Stmt {
+  constructor(url) {
+    super();
+    this.url = url;
+  }
+}
+
 class ClickByID extends Stmt {
   constructor(id) {
     super();
