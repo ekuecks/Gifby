@@ -29,8 +29,9 @@ O {
     = Stmt*
 
   Stmt
-    = click string                                                          -- click
-    | fill string string                                                           -- fill
+    = goto string                                                           -- goto
+    | click string                                                          -- click
+    | fill string string                                                    -- fill
 
   // Lexical rules
 
@@ -47,6 +48,7 @@ O {
   tokens
     = (string | comment | any)*
 
+  goto = "GOTO" ~alnum
   click = "CLICK" ~alnum
   fill = "FILL" ~alnum
 
