@@ -19,17 +19,84 @@ class Stmt extends AST {
   }
 }
 
-class Click extends Stmt {
+class ClickByID extends Stmt {
   constructor(id) {
     super();
-    this.id = id.interval.contents.substring(1, id.interval.contents.length - 1);
+    this.id = id.substring(3);
   }
 }
 
-class Fill extends Stmt {
+class ClickByClass extends Stmt {
+  constructor(klass) {
+    super();
+    // klass = "CLASS:klass NUMBER:number
+    var index = klass.indexOf("NUMBER:");
+    if(index > -1) {
+      this.pos = parseInt(klass.substring(index + 7)) - 1;
+      this.klass = klass.substring(6, index - 1);
+    }
+    else {
+      this.pos = 0;
+      this.klass = klass.substring(6);
+    }
+  }
+}
+
+class ClickByAttribute extends Stmt {
+  constructor(attr) {
+    super();
+    // attr = "ATTRIBUTE:attribute NUMBER:number
+    var index = attr.indexOf("NUMBER:");
+    if(index > -1) {
+      this.pos = parseInt(attr.substring(index + 7)) - 1;
+      this.attr = attr.substring(10, index - 1);
+    }
+    else {
+      this.pos = 0;
+      this.attr = attr.substring(10);
+    }
+  }
+}
+
+class FillByID extends Stmt {
   constructor(id, text) {
     super();
-    this.id = id.interval.contents.substring(1, id.interval.contents.length - 1);
+    // id = "ID:id NUMBER:number
     this.text = text.interval.contents.substring(1, text.interval.contents.length - 1);
+    this.id = id.substring(3);
+  }
+}
+
+class FillByClass extends Stmt {
+  constructor(klass, text) {
+    super();
+    // klass = "CLASS:klass NUMBER:number
+    this.text = text.interval.contents.substring(1, text.interval.contents.length - 1);
+    var index = klass.indexOf("NUMBER:");
+    if(index > -1) {
+      this.pos = parseInt(klass.substring(index + 7)) - 1;
+      this.klass = klass.substring(6, index - 1);
+    }
+    else {
+      this.pos = 0;
+      this.klass = klass.substring(6);
+    }
+  }
+}
+
+class FillByAttribute extends Stmt {
+  constructor(attr, text) {
+    super();
+    // attr = "ATTRIBUTE:attribute NUMBER:number
+    this.text = text.interval.contents.substring(1, text.interval.contents.length - 1);
+    var index = attr.indexOf("NUMBER:");
+    if(index > -1) {
+      this.pos = parseInt(attr.substring(index + 7)) - 1;
+      this.attr = attr.substring(10, index - 1);
+    }
+    else {
+      this.pos = 0;
+      this.attr = attr.substring(10);
+    }
   }
 }

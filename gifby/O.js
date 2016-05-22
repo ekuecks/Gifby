@@ -11,12 +11,30 @@ var O = new Language(g, g.semantics().addOperation('toAST', {
     return ss.toAST().concat([]);
   },
 
-  Stmt_click: function(_fill, id) {
-    return new Click(id);
+  Stmt_click: function(_fill, str) {
+    str = str.interval.contents.substring(1, str.interval.contents.length - 1);
+    if(str.indexOf("ID:") > -1) {
+      return new ClickByID(str);
+    }
+    else if(str.indexOf("CLASS:") > -1) {
+      return new ClickByClass(str);
+    }
+    else {
+      return new ClickByAttribute(str);
+    }
   },
 
-  Stmt_fill: function(_fill, id, text) {
-    return new Fill(id, text);
+  Stmt_fill: function(_fill, str, text) {
+    str = str.interval.contents.substring(1, str.interval.contents.length - 1);
+    if(str.indexOf("ID:") > -1) {
+      return new FillByID(str, text);
+    }
+    else if(str.indexOf("CLASS:") > -1) {
+      return new FillByClass(str, text);
+    }
+    else {
+      return new FillByAttribute(str, text);
+    }
   },
 
   string: function(_oq, cs, _cq) {
