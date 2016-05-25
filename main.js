@@ -1,3 +1,4 @@
+_selectedForm;
 function saveState(){
     console.log(JSON.stringify(window.state));
     chrome.storage.sync.set({'state':JSON.stringify(window.state)}, function (err){
@@ -25,7 +26,21 @@ function restoreState(){
 restoreState();
 
 $('html').click(function(e){
-    if(e.target.nodeName == "A"){
+    //if(e.target.nodeName == "A"){
+    console.log(e.target);
         saveState();
+    //}
+});
+
+$('input').click(function(e) {
+    // Keep track that this form is selected
+    _selectedForm = e.target;
+});
+
+$('html').keydown( function(e) {
+    var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
+    if(key == 13) {
+        e.preventDefault();
+        alert("enter pressed");
     }
 });
