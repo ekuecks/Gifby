@@ -1,6 +1,6 @@
 console.log( 'Background.html starting!' );
 	/*Put page action icon on all tabs*/
-	chrome.tabs.onUpdated.addListener(function(tabId) {
+  chrome.tabs.onUpdated.addListener(function(tabId) {
 		chrome.pageAction.show(tabId);
 	});
 
