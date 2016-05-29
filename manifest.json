@@ -15,10 +15,11 @@
   "content_scripts": [
   {
       "matches": ["<all_urls>"],
-          "js": ["background.js", "mainView.js","script.js","lib/jquery-2.1.1.min.js",
-                 "bootstrapCss.js", "main.js"]
+          "js": ["mainView.js","script.js","lib/jquery-2.1.1.min.js",
+                 "bootstrapCss.js", "main.js", "MediaStreamRecorder.js"]
   }],
   "permissions": [
+    "desktopCapture",
     "storage",
     "tabs",
     "activeTab",

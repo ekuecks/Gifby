@@ -8,10 +8,16 @@ window.mainViewHtml = `
             <button class='pure-button' id='stop'>Stop</button>
         </span>
         </div>
-        <div class="pure-g">
-            <div class="pure-u-1-3"><p>Thirds</p></div>
-            <div class="pure-u-1-3"><p>Thirds</p></div>
-            <div class="pure-u-1-3"><p>Thirds</p></div>
+        <div id='scriptcontetn' class="pure-g">
+
+        <div id='vidshit'>
+        </div>
+        <p>
+        <button id="start">Start</button>
+        <button id="cancel">Cancel</button>
+        <button id="startFromBackgroundPage">Start from background page</button>
+        </p>
+
         </div>
     </div>
 </div>

@@ -27,16 +27,27 @@
       -
       - [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
      -->
+     <script type="text/javascript" src="MediaStreamRecorder.js"> </script>
      <script type="text/javascript" src="lib/jquery-2.1.1.min.js"></script>
      <script type="text/javascript" src="bootstrapCss.js"></script>
      <script type="text/javascript" src="mainView.js"></script>
      <script type="text/javascript" src="background.js"></script>
      <script type="text/javascript" src="main.js"></script>
+     <script src="app.js"></script>
   </head>
-    <!--
   <body>
-    <h1> What's up dawg </h1>
+
+
+          <div>
+                  <video id="video" autoplay></video>
+                          <video id="remoteVideo" autoplay></video>
+                                  </div>
+                                          <p>
+                                                  <button id="start">Start</button>
+                                                          <button id="cancel">Cancel</button>
+                                                                  <button id="startFromBackgroundPage">Start from background page</button>
+                                                                          </p>
+
   </body>
-     -->
 </html>
 
