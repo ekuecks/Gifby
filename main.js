@@ -1,7 +1,5 @@
 function saveState(){
-    console.log(JSON.stringify(window.state));
     chrome.storage.sync.set({'state':JSON.stringify(window.state)}, function (err){
-        console.log(err);
     });
 }
 
@@ -12,8 +10,8 @@ function restoreState(){
         if(obj == undefined){
             obj = {};
             obj.sidebarOpen = false;
+            obj.recording = false;
             obj = JSON.stringify(obj);
-            console.log('first time');
         }
         window.state = JSON.parse(obj);
         if(window.state.sidebarOpen){
@@ -22,10 +20,34 @@ function restoreState(){
     });
 }
 
-restoreState();
 
+restoreState();
 $('html').click(function(e){
-    if(e.target.nodeName == "A"){
-        saveState();
-    }
+    saveState();
 });
+
+setTimeout(function(){
+$('#record').click(function(){
+    window.state.isRecording = true;
+    chrome.runtime.sendMessage({cmd: "record"}, function(response) {
+    });
+});
+
+$('#stop').click(function(){
+    window.state.isRecording = false;
+});
+
+chrome.extension.onMessage.addListener(function(msg, sender, sendResponse) {
+  console.log(msg);
+  // a video is rdy
+  if(msg.vidlink){
+    $("#vidshit").html(`
+        <video controls="" autoplay="" name="media" width="400" height = "300" loop>
+            <source src="`+msg.vidlink+`" type="video/webm">
+        </video>
+    `);
+  }
+});
+
+
+}, 1000);
