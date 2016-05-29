@@ -17,21 +17,11 @@ ClickByID.prototype.trans = function() {
 }
 
 ClickByClass.prototype.trans = function() {
-  if(this.pos == 0) {
-    return "$('." + this.klass +"').trigger('click')";
-  }
-  else {
-    return "$('." + this.klass +"').slice(" + this.pos + ", " + this.pos + " + 1).trigger('click')";
-  }
+  return "$('." + this.klass +"').slice(" + this.pos + ", " + this.pos + " + 1).trigger('click')";
 }
 
 ClickByAttribute.prototype.trans = function() {
-  if(this.pos == 0) {
-    return "$('" + this.attr +"').trigger('click')";
-  }
-  else {
-    return "$('" + this.attr +"').slice(" + this.pos + ", " + this.pos + " + 1).trigger('click')";
-  }
+  return "$('" + this.attr +"').slice(" + this.pos + ", " + this.pos + " + 1).trigger('click')";
 }
 
 FillByID.prototype.trans = function() {
@@ -39,21 +29,11 @@ FillByID.prototype.trans = function() {
 }
 
 FillByClass.prototype.trans = function() {
-  if(this.pos == 0) {
-    return "$('." + this.klass +"').val(\"" + this.text + "\")";
-  }
-  else {
-    return "$('." + this.klass +"').slice(" + this.pos + ", " + this.pos + " + 1).val(\"" + this.text + "\")";
-  }
+  return "$('." + this.klass +"').slice(" + this.pos + ", " + this.pos + " + 1).val(\"" + this.text + "\")";
 }
 
 FillByAttribute.prototype.trans = function() {
-  if(this.pos == 0) {
-    return "$('" + this.attr +"').val(\"" + this.text + "\")";
-  }
-  else {
-    return "$('" + this.attr +"').slice(" + this.pos + ", " + this.pos + " + 1).val(\"" + this.text + "\")";
-  }
+  return "$('" + this.attr +"').slice(" + this.pos + ", " + this.pos + " + 1).val(\"" + this.text + "\")";
 }
 
 function trans(ast) {

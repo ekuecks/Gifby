@@ -1,3 +1,4 @@
+var _selectedForm = undefined;
 function saveState(){
     chrome.storage.sync.set({'state':JSON.stringify(window.state)}, function (err){
     });
@@ -31,6 +32,21 @@ $('#record').click(function(){
     window.state.isRecording = true;
     chrome.runtime.sendMessage({cmd: "record"}, function(response) {
     });
+        saveState();
+});
+
+$('input').click(function(e) {
+    // Keep track that this form is selected
+    _selectedForm = e.target;
+    console.log(e.target);
+});
+
+$('button').click(function(e) {
+    console.log(e.target);
+});
+
+$('html').keydown( function(e) {
+    var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
 });
 
 $('#stop').click(function(){
