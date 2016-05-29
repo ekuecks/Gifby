@@ -1,4 +1,6 @@
 var _selectedForm = undefined;
+const STATEMENT_ID_BASE = 'gifby_statement';
+var statementCount = 0;
 function saveState(){
     chrome.storage.sync.set({'state':JSON.stringify(window.state)}, function (err){
     });
@@ -20,7 +22,33 @@ function restoreState(){
         }
     });
 }
+class Fill {
+  constructor(identifier, text, num) {
+    this.identifier = identifier;
+    this.text = text;
+    this.num = num;
+  }
 
+  toDOM() {
+    var div = document.createElement("div");
+    div.id = STATEMENT_ID_BASE + this.num;
+    div.innerHTML = this.identifier + " " + this.text;
+    return div;
+  }
+}
+class Click {
+  constructor(identifier, num) {
+    this.identifier = identifier;
+    this.num = num;
+  }
+
+  toDOM() {
+    var div = document.createElement("div");
+    div.id = STATEMENT_ID_BASE + this.num;
+    div.innerHTML = this.identifier;
+    return div;
+  }
+}
 
 restoreState();
 $('html').click(function(e){
@@ -39,11 +67,12 @@ $('input').click(function(e) {
     // Keep track that this form is selected
     _selectedForm = e.target;
     console.log(e.target);
-    if(e.target.id != undefined) {
+    var stmt;
+    if(e.target.id != "") {
       // Unique id for this object
-      console.log("FILL \"ID: " + e.target.id +"\" \"\"");
+      stmt = new Fill("FILL \"ID: " + e.target.id +"\"", "\"\"", statementCount);
     }
-    else if(e.target.className != undefined) {
+    else if(e.target.className != "") {
       var i = 0;
       var nodes = $("." + e.target.className);
       var length = nodes.length;
@@ -53,12 +82,12 @@ $('input').click(function(e) {
         }
         i++;
       }
-      console.log("FILL \"CLASS: " + e.target.className +" NUMBER: " + i + "\" \"\"");
+      stmt = new Fill("FILL \"CLASS: " + e.target.className +" NUMBER: " + i + "\"", "\"\"", statementCount);
     }
     else {
       // nodeName = INPUT
       var i = 0;
-      var nodes = $("." + e.target.className);
+      var nodes = $(e.target.nodeName);
       var length = nodes.length;
       while(i < length) {
         if(nodes.get(i) == e.target) {
@@ -66,32 +95,36 @@ $('input').click(function(e) {
         }
         i++;
       }
-      console.log("FILL \"ATTRIBUTE: " + e.target.nodeName +" NUMBER: " + i + "\" \"\"");
+      stmt = new Fill("FILL \"ATTRIBUTE: " + e.target.nodeName +" NUMBER: " + i + "\"", "\"\"", statementCount);
     }
+    statementCount++;
+    $('#gifby').get(0).appendChild(stmt.toDOM());
 });
 
 $('button').click(function(e) {
     console.log(e.target);
-    if(e.target.id != undefined) {
+    var stmt;
+    if(e.target.id != "") {
       // Unique id for this object
-      console.log("CLICK \"ID: " + e.target.id +"\"");
+      stmt = new Click("CLICK \"ID: " + e.target.id +"\"", statementCount);
     }
-    else if(e.target.className != undefined) {
+    else if(e.target.className != "") {
       var i = 0;
       var nodes = $("." + e.target.className);
       var length = nodes.length;
+      
       while(i < length) {
         if(nodes.get(i) == e.target) {
           break;
         }
         i++;
       }
-      console.log("CLICK \"CLASS: " + e.target.className +" NUMBER: " + i + "\"");
+      stmt = new Click("CLICK \"CLASS: " + e.target.className +" NUMBER: " + i + "\"", statementCount);
     }
     else {
       // nodeName = BUTTON
       var i = 0;
-      var nodes = $("." + e.target.className);
+      var nodes = $(e.target.nodeName);
       var length = nodes.length;
       while(i < length) {
         if(nodes.get(i) == e.target) {
@@ -99,8 +132,10 @@ $('button').click(function(e) {
         }
         i++;
       }
-      console.log("CLICK \"ATTRIBUTE: " + e.target.nodeName +" NUMBER: " + i + "\"");
+      stmt = new Click("CLICK \"ATTRIBUTE: " + e.target.nodeName +" NUMBER: " + i + "\"", statementCount);
     }
+    statementCount++;
+    $('#gifby').get(0).appendChild(stmt.toDOM());
 });
 
 $('html').keydown( function(e) {
@@ -122,6 +157,4 @@ chrome.extension.onMessage.addListener(function(msg, sender, sendResponse) {
     `);
   }
 });
-
-
 }, 1000);

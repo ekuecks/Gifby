@@ -1,5 +1,5 @@
 window.mainViewHtml = `
-<div style='margin-left: 20px; margin-top:10px'>
+<div id='gifby' style='margin-left: 20px; margin-top:10px'>
     <div style='width: 800px'>
         <div>
         <b><font size='5'>Giffy</font></b>
