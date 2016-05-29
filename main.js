@@ -1,4 +1,5 @@
 var _selectedForm = undefined;
+var _selectedStmt = undefined;
 const STATEMENT_ID_BASE = 'gifby_statement';
 var statementCount = 0;
 function saveState(){
@@ -22,6 +23,7 @@ function restoreState(){
         }
     });
 }
+
 class Fill {
   constructor(identifier, text, num) {
     this.identifier = identifier;
@@ -36,6 +38,7 @@ class Fill {
     return div;
   }
 }
+
 class Click {
   constructor(identifier, num) {
     this.identifier = identifier;
@@ -48,6 +51,22 @@ class Click {
     div.innerHTML = this.identifier;
     return div;
   }
+}
+
+function updateFill(stmt, newText) {
+  // Get the position of third '"' character
+  console.log(stmt.innerHTML);
+  var pos = -1;
+  var n = 0;
+  while(n < 3){
+      pos = stmt.innerHTML.indexOf('"', pos + 1);
+      if (pos < 0) {
+        break;
+      }
+      n++;
+  }
+  console.log(stmt.innerHTML.substr(0, pos));
+  $('#' + stmt.id).get(0).innerHTML = stmt.innerHTML.substring(0, pos) + newText;
 }
 
 restoreState();
@@ -64,13 +83,16 @@ $('#record').click(function(){
 });
 
 $('input').click(function(e) {
+    if(_selectedForm == e.target) {
+      updateFill(_selectedStmt, "\"" + e.target.value + "\"");
+      return;
+    }
     // Keep track that this form is selected
-    _selectedForm = e.target;
     console.log(e.target);
     var stmt;
     if(e.target.id != "") {
       // Unique id for this object
-      stmt = new Fill("FILL \"ID: " + e.target.id +"\"", "\"\"", statementCount);
+      stmt = new Fill("FILL \"ID: " + e.target.id +"\"", "\"" + e.target.value + "\"", statementCount);
     }
     else if(e.target.className != "") {
       var i = 0;
@@ -82,7 +104,7 @@ $('input').click(function(e) {
         }
         i++;
       }
-      stmt = new Fill("FILL \"CLASS: " + e.target.className +" NUMBER: " + i + "\"", "\"\"", statementCount);
+      stmt = new Fill("FILL \"CLASS: " + e.target.className +" NUMBER: " + i + "\"",  "\"" + e.target.value + "\"", statementCount);
     }
     else {
       // nodeName = INPUT
@@ -95,13 +117,17 @@ $('input').click(function(e) {
         }
         i++;
       }
-      stmt = new Fill("FILL \"ATTRIBUTE: " + e.target.nodeName +" NUMBER: " + i + "\"", "\"\"", statementCount);
+      stmt = new Fill("FILL \"ATTRIBUTE: " + e.target.nodeName +" NUMBER: " + i + "\"", "\"" + e.target.value + "\"", statementCount);
     }
     statementCount++;
+    _selectedForm = e.target;
+    _selectedStmt = stmt.toDOM();
     $('#gifby').get(0).appendChild(stmt.toDOM());
 });
 
 $('button').click(function(e) {
+    _selectedForm = undefined;
+    _selectedStmt = undefined;
     console.log(e.target);
     var stmt;
     if(e.target.id != "") {
