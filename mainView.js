@@ -1,5 +1,5 @@
 window.mainViewHtml = `
-<div style='margin-left: 20px; margin-top:10px; overflow: scrollable; height: 100%; overflow-y: scroll;'>
+<div id='gifby' style='margin-left: 20px; margin-top:10px; overflow: scrollable; height: 100%; overflow-y: scroll;'>
     <div style='width: 800px;'>
         <div>
         <b><font size='5'>Giffy</font></b>
