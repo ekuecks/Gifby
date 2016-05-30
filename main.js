@@ -32,7 +32,6 @@ $('#record').click(function(){
     window.state.isRecording = true;
     chrome.runtime.sendMessage({cmd: "record"}, function(response) {
     });
-        saveState();
 });
 
 $('input').click(function(e) {
@@ -50,6 +49,8 @@ $('html').keydown( function(e) {
 });
 
 $('#stop').click(function(){
+    chrome.runtime.sendMessage({cmd: "stahp"}, function(response) {
+    });
     window.state.isRecording = false;
 });
 
@@ -57,7 +58,7 @@ chrome.extension.onMessage.addListener(function(msg, sender, sendResponse) {
   console.log(msg);
   // a video is rdy
   if(msg.vidlink){
-    $("#vidshit").html(`
+    $("#vidshit").html($('#vidshit').html() + `
         <video controls="" autoplay="" name="media" width="400" height = "300" loop>
             <source src="`+msg.vidlink+`" type="video/webm">
         </video>

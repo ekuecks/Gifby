@@ -1,6 +1,6 @@
 window.mainViewHtml = `
-<div style='margin-left: 20px; margin-top:10px'>
-    <div style='width: 800px'>
+<div style='margin-left: 20px; margin-top:10px; overflow: scrollable; height: 100%; overflow-y: scroll;'>
+    <div style='width: 800px;'>
         <div>
         <b><font size='5'>Giffy</font></b>
         <span style='position:fixed; right: 10px'>
@@ -12,11 +12,6 @@ window.mainViewHtml = `
 
         <div id='vidshit'>
         </div>
-        <p>
-        <button id="start">Start</button>
-        <button id="cancel">Cancel</button>
-        <button id="startFromBackgroundPage">Start from background page</button>
-        </p>
 
         </div>
     </div>
