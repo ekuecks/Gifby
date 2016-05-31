@@ -81,6 +81,14 @@ $('#record').click(function(){
     });
 });
 
+$('#stop').click(function(){
+    console.log('ehhh');
+    chrome.runtime.sendMessage({cmd: "stahp"}, function(response) {
+    });
+    window.state.isRecording = false;
+});
+
+
 $('input').click(function(e) {
     if(_selectedForm == e.target) {
       updateFill(_selectedStmt, "\"" + e.target.value + "\"");
@@ -165,12 +173,6 @@ $('button').click(function(e) {
 
 $('html').keydown( function(e) {
     var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
-});
-
-$('#stop').click(function(){
-    chrome.runtime.sendMessage({cmd: "stahp"}, function(response) {
-    });
-    window.state.isRecording = false;
 });
 
 chrome.extension.onMessage.addListener(function(msg, sender, sendResponse) {

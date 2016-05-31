@@ -72,6 +72,7 @@ function onMediaError(e) {
 
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
+        console.log(request);
         if(request.cmd == 'record') {
             if(weGotAccess){
                 mediaRecorder.start(9000000); //unlimited lol
