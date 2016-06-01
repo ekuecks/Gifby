@@ -8,6 +8,7 @@ const DESKTOP_MEDIA = ['screen', 'window', 'tab', 'audio'];
 
 var pending_request_id = null;
 var weGotAccess = weGotAccess ? true : false;
+var recording = false;
 var mediaRecorder = mediaRecorder ? mediaRecorder : null;
 
 window.state = {};
@@ -55,12 +56,14 @@ function onMediaSuccess(stream) {
 
         console.log(link);
         console.log(videoInfo);
-        chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
-            console.log(tabs);
-            chrome.tabs.sendMessage(tabs[0].id, {vidlink: link},
-            function(response) {});
-        });
-
+        if(recording == true){
+            chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
+                console.log(tabs);
+                chrome.tabs.sendMessage(tabs[0].id, {vidlink: link},
+                function(response) {});
+            });
+            recording = false;
+        }
     };
 
     mediaRecorder.start(9000000); //unlimited lol
@@ -76,6 +79,7 @@ chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
         console.log(request);
         if(request.cmd == 'record') {
+            recording = true;
             if(weGotAccess){
                 mediaRecorder.start(9000000); //unlimited lol
                 return;

@@ -63,13 +63,14 @@ function updateFill(stmt, newText) {
 
 setTimeout(function(){
 $('#record').click(function(){
+    $('#indicator').html('Recording ...');
     window.state.isRecording = true; // we assume they select a screen
     chrome.runtime.sendMessage({cmd: "record"}, function(response) {
     });
 });
 
 $('#stop').click(function(){
-    console.log('ehhh');
+    $('#indicator').html('');
     chrome.runtime.sendMessage({cmd: "stahp"}, function(response) {
     });
     window.state.isRecording = false;
