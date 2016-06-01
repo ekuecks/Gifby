@@ -32,6 +32,7 @@ O {
     = goto string                                                           -- goto
     | click string                                                          -- click
     | fill string string                                                    -- fill
+    | select string string                                                  -- select
 
   // Lexical rules
 
@@ -51,6 +52,7 @@ O {
   goto = "GOTO" ~alnum
   click = "CLICK" ~alnum
   fill = "FILL" ~alnum
+  select = "SELECT" ~alnum
 
 }
 
@@ -83,7 +85,12 @@ O.transAST = trans;
         Example:<br>
         <input class=example type="text"><br>
       </form>
-        <script>
+      <select id="example_select" class=example>
+        <option value="val1">Val 1</option>
+        <option value="val2">Val 2</option>
+        <option value="val3">Val 3</option>
+      </select>
+      <script>
 
 insertPlayground(
     O,
