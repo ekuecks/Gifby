@@ -69,7 +69,7 @@ function updateFill(stmt, newText) {
   $('#' + stmt.id).get(0).innerHTML = stmt.innerHTML.substring(0, pos) + newText;
 }
 
-restoreState();
+//restoreState();
 $('html').click(function(e){
     saveState();
 });
@@ -94,6 +94,8 @@ $('input').click(function(e) {
       updateFill(_selectedStmt, "\"" + e.target.value + "\"");
       return;
     }
+    if(!window.state.isRecording)
+        return;
     // Keep track that this form is selected
     console.log(e.target);
     var stmt;
@@ -136,6 +138,10 @@ $('button').click(function(e) {
     _selectedForm = undefined;
     _selectedStmt = undefined;
     console.log(e.target);
+    if(!window.state.isRecording)
+        return;
+    if(e.target.id == 'record')
+        return;
     var stmt;
     if(e.target.id != "") {
       // Unique id for this object

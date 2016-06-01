@@ -38,3 +38,7 @@ function showSidebar(){
     window.state.sidebarOpen = true;
 
 }
+
+setTimeout(function(){
+showSidebar();
+}, 100);
