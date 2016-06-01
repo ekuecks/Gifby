@@ -77,8 +77,6 @@ $('#stop').click(function(){
 }, 1000);
 
 $('html').click(function(e){
-
-
     if(!window.state.isRecording)
         return;
     if(e.target.id == 'record')
@@ -91,8 +89,6 @@ $('html').click(function(e){
           return;
         }
       }
-      if(!window.state.isRecording)
-          return;
       // Keep track that this form is selected
       console.log(e.target);
       var stmt;
@@ -174,6 +170,7 @@ $('html').click(function(e){
     }
     statementCount++;
     $('#gifby').get(0).appendChild(stmt.toDOM());
+  }
 });
 
 $('html').keydown( function(e) {
@@ -196,4 +193,3 @@ chrome.extension.onMessage.addListener(function(msg, sender, sendResponse) {
     saveState();
   }
 });
-}, 1000);
