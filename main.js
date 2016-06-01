@@ -90,9 +90,11 @@ $('#stop').click(function(){
 
 
 $('input').click(function(e) {
-    if(_selectedForm == e.target) {
-      updateFill(_selectedStmt, "\"" + e.target.value + "\"");
-      return;
+    if(_selectedForm != undefined) {
+      updateFill(_selectedStmt, "\"" + _selectedForm.value + "\"");
+      if(e.target == _selectedForm) {
+        return;
+      }
     }
     if(!window.state.isRecording)
         return;
@@ -113,6 +115,7 @@ $('input').click(function(e) {
         }
         i++;
       }
+      i++;
       stmt = new Fill("FILL \"CLASS: " + e.target.className +" NUMBER: " + i + "\"",  "\"" + e.target.value + "\"", statementCount);
     }
     else {
@@ -126,6 +129,7 @@ $('input').click(function(e) {
         }
         i++;
       }
+      i++;
       stmt = new Fill("FILL \"ATTRIBUTE: " + e.target.nodeName +" NUMBER: " + i + "\"", "\"" + e.target.value + "\"", statementCount);
     }
     statementCount++;
@@ -135,6 +139,9 @@ $('input').click(function(e) {
 });
 
 $('button').click(function(e) {
+    if(_selectedForm != undefined) {
+      updateFill(_selectedStmt, "\"" + _selectedForm.value + "\"");
+    }
     _selectedForm = undefined;
     _selectedStmt = undefined;
     console.log(e.target);
@@ -158,6 +165,7 @@ $('button').click(function(e) {
         }
         i++;
       }
+      i++;
       stmt = new Click("CLICK \"CLASS: " + e.target.className +" NUMBER: " + i + "\"", statementCount);
     }
     else {
@@ -171,6 +179,7 @@ $('button').click(function(e) {
         }
         i++;
       }
+      i++;
       stmt = new Click("CLICK \"ATTRIBUTE: " + e.target.nodeName +" NUMBER: " + i + "\"", statementCount);
     }
     statementCount++;

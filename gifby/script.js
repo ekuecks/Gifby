@@ -1,5 +1,5 @@
 function change1() {
-  var elem = document.getElementsByClassName("example")[0];
+  var elem = document.getElementsByTagName("button")[0];
   if(elem.innerHTML == "OFF") {
     elem.innerHTML = "ON";
   }
@@ -8,7 +8,7 @@ function change1() {
   }
 }
 function change2() {
-  var elem = document.getElementsByClassName("example")[1];
+  var elem = document.getElementsByTagName("button")[1];
   if(elem.innerHTML == "OFF") {
     elem.innerHTML = "ON";
   }
@@ -17,7 +17,7 @@ function change2() {
   }
 }
 function change3() {
-  var elem = document.getElementsByClassName("example")[2];
+  var elem = document.getElementsByTagName("button")[2];
   if(elem.innerHTML == "OFF") {
     elem.innerHTML = "ON";
   }
