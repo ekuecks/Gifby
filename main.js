@@ -1,4 +1,5 @@
 var _selectedForm = undefined;
+var _selectedSelect = undefined;
 var _selectedStmt = undefined;
 const STATEMENT_ID_BASE = 'gifby_statement';
 var statementCount = 0;
@@ -53,7 +54,22 @@ class Click {
   }
 }
 
-function updateFill(stmt, newText) {
+class Select {
+  constructor(identifier, text, num) {
+    this.identifier = identifier;
+    this.text = text;
+    this.num = num;
+  }
+
+  toDOM() {
+    var div = document.createElement("div");
+    div.id = STATEMENT_ID_BASE + this.num;
+    div.innerHTML = this.identifier + " " + this.text;
+    return div;
+  }
+}
+
+function updateStmt(stmt, newText) {
   // Get the position of third '"' character
   console.log(stmt.innerHTML);
   var pos = -1;
@@ -71,64 +87,120 @@ function updateFill(stmt, newText) {
 
 //restoreState();
 $('html').click(function(e){
-    if(!window.state.isRecording)
+  if(!window.state.isRecording)
+    return;
+  if(e.target.id == 'record')
+    return;
+  saveState();
+  if(e.target.nodeName == "INPUT") {
+    if(_selectedForm != undefined) {
+      updateStmt(_selectedStmt, "\"" + _selectedForm.value + "\"");
+      if(e.target == _selectedForm) {
         return;
-    if(e.target.id == 'record')
-        return;
-    saveState();
-    if(e.target.nodeName == "INPUT") {
-      if(_selectedForm != undefined) {
-        updateFill(_selectedStmt, "\"" + _selectedForm.value + "\"");
-        if(e.target == _selectedForm) {
-          return;
-        }
       }
-      if(!window.state.isRecording)
-          return;
-      // Keep track that this form is selected
-      console.log(e.target);
-      var stmt;
-      if(e.target.id != "") {
-        // Unique id for this object
-        stmt = new Fill("FILL \"ID: " + e.target.id +"\"", "\"" + e.target.value + "\"", statementCount);
-      }
-      else if(e.target.className != "") {
-        var i = 0;
-        var nodes = $("." + e.target.className);
-        var length = nodes.length;
-        while(i < length) {
-          if(nodes.get(i) == e.target) {
-            break;
-          }
-          i++;
+    }
+    else if(_selectedSelect != undefined) {
+      updateStmt(_selectedStmt, "\"" + _selectedSelect.value + "\"");
+    }
+    // Keep track that this form is selected
+    console.log(e.target);
+    var stmt;
+    if(e.target.id != "") {
+      // Unique id for this object
+      stmt = new Fill("FILL \"ID: " + e.target.id +"\"", "\"" + e.target.value + "\"", statementCount);
+    }
+    else if(e.target.className != "") {
+      var i = 0;
+      var nodes = $("." + e.target.className);
+      var length = nodes.length;
+      while(i < length) {
+        if(nodes.get(i) == e.target) {
+          break;
         }
         i++;
-        stmt = new Fill("FILL \"CLASS: " + e.target.className +" NUMBER: " + i + "\"",  "\"" + e.target.value + "\"", statementCount);
       }
-      else {
-        // nodeName = INPUT
-        var i = 0;
-        var nodes = $(e.target.nodeName);
-        var length = nodes.length;
-        while(i < length) {
-          if(nodes.get(i) == e.target) {
-            break;
-          }
-          i++;
+      i++;
+      stmt = new Fill("FILL \"CLASS: " + e.target.className +" NUMBER: " + i + "\"",  "\"" + e.target.value + "\"", statementCount);
+    }
+    else {
+      // nodeName = INPUT
+      var i = 0;
+      var nodes = $(e.target.nodeName);
+      var length = nodes.length;
+      while(i < length) {
+        if(nodes.get(i) == e.target) {
+          break;
         }
         i++;
-        stmt = new Fill("FILL \"ATTRIBUTE: " + e.target.nodeName +" NUMBER: " + i + "\"", "\"" + e.target.value + "\"", statementCount);
       }
-      statementCount++;
-      _selectedForm = e.target;
-      _selectedStmt = stmt.toDOM();
-      $('#gifby').get(0).appendChild(stmt.toDOM());
+      i++;
+      stmt = new Fill("FILL \"ATTRIBUTE: " + e.target.nodeName +" NUMBER: " + i + "\"", "\"" + e.target.value + "\"", statementCount);
+    }
+    statementCount++;
+    _selectedForm = e.target;
+    _selectedStmt = stmt.toDOM();
+    _selectedSelect = undefined;
+    $('#gifby').get(0).appendChild(stmt.toDOM());
+  }
+  else if(e.target.nodeName == "SELECT") {
+    if(_selectedSelect != undefined) {
+      updateStmt(_selectedStmt, "\"" + _selectedSelect.value + "\"");
+      if(e.target == _selectedSelect) {
+        return;
+      }
+    }
+    else if(_selectedForm != undefined) {
+      updateStmt(_selectedStmt, "\"" + _selectedForm.value + "\"");
+    }
+    // Keep track that this form is selected
+    console.log(e.target);
+    var stmt;
+    if(e.target.id != "") {
+      // Unique id for this object
+      stmt = new Select("SELECT \"ID: " + e.target.id +"\"", "\"" + e.target.value + "\"", statementCount);
+    }
+    else if(e.target.className != "") {
+      var i = 0;
+      var nodes = $("." + e.target.className);
+      var length = nodes.length;
+      while(i < length) {
+        if(nodes.get(i) == e.target) {
+          break;
+        }
+        i++;
+      }
+      i++;
+      stmt = new Select("SELECT \"CLASS: " + e.target.className +" NUMBER: " + i + "\"",  "\"" + e.target.value + "\"", statementCount);
+    }
+    else {
+      // nodeName = INPUT
+      var i = 0;
+      var nodes = $(e.target.nodeName);
+      var length = nodes.length;
+      while(i < length) {
+        if(nodes.get(i) == e.target) {
+          break;
+        }
+        i++;
+      }
+      i++;
+      stmt = new Select("SELECT \"ATTRIBUTE: " + e.target.nodeName +" NUMBER: " + i + "\"", "\"" + e.target.value + "\"", statementCount);
+    }
+    statementCount++;
+    _selectedSelect = e.target;
+    _selectedStmt = stmt.toDOM();
+    _selectedFill = undefined;
+    $('#gifby').get(0).appendChild(stmt.toDOM());
   }
   else {
     if(_selectedForm != undefined) {
-      updateFill(_selectedStmt, "\"" + _selectedForm.value + "\"");
+      updateStmt(_selectedStmt, "\"" + _selectedForm.value + "\"");
+    }
+    else if(_selectedSelect != undefined) {
+      updateStmt(_selectedStmt, "\"" + _selectedSelect.value + "\"");
     }
     _selectedForm = undefined;
+    _selectedSelect = undefined;
     _selectedStmt = undefined;
     console.log(e.target);
     var stmt;
