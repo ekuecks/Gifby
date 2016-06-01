@@ -61,10 +61,6 @@ function updateFill(stmt, newText) {
   $('#' + stmt.id).get(0).innerHTML = stmt.innerHTML.substring(0, pos) + newText;
 }
 
-$('html').click(function(e){
-    saveState();
-});
-
 setTimeout(function(){
 $('#record').click(function(){
     window.state.isRecording = true; // we assume they select a screen
@@ -78,68 +74,71 @@ $('#stop').click(function(){
     });
     window.state.isRecording = false;
 });
+}, 1000);
+
+$('html').click(function(e){
 
 
-$('input').click(function(e) {
-    if(_selectedForm != undefined) {
-      updateFill(_selectedStmt, "\"" + _selectedForm.value + "\"");
-      if(e.target == _selectedForm) {
-        return;
-      }
-    }
     if(!window.state.isRecording)
         return;
-    // Keep track that this form is selected
-    console.log(e.target);
-    var stmt;
-    if(e.target.id != "") {
-      // Unique id for this object
-      stmt = new Fill("FILL \"ID: " + e.target.id +"\"", "\"" + e.target.value + "\"", statementCount);
-    }
-    else if(e.target.className != "") {
-      var i = 0;
-      var nodes = $("." + e.target.className);
-      var length = nodes.length;
-      while(i < length) {
-        if(nodes.get(i) == e.target) {
-          break;
+    if(e.target.id == 'record')
+        return;
+    saveState();
+    if(e.target.nodeName == "INPUT") {
+      if(_selectedForm != undefined) {
+        updateFill(_selectedStmt, "\"" + _selectedForm.value + "\"");
+        if(e.target == _selectedForm) {
+          return;
+        }
+      }
+      if(!window.state.isRecording)
+          return;
+      // Keep track that this form is selected
+      console.log(e.target);
+      var stmt;
+      if(e.target.id != "") {
+        // Unique id for this object
+        stmt = new Fill("FILL \"ID: " + e.target.id +"\"", "\"" + e.target.value + "\"", statementCount);
+      }
+      else if(e.target.className != "") {
+        var i = 0;
+        var nodes = $("." + e.target.className);
+        var length = nodes.length;
+        while(i < length) {
+          if(nodes.get(i) == e.target) {
+            break;
+          }
+          i++;
         }
         i++;
+        stmt = new Fill("FILL \"CLASS: " + e.target.className +" NUMBER: " + i + "\"",  "\"" + e.target.value + "\"", statementCount);
       }
-      i++;
-      stmt = new Fill("FILL \"CLASS: " + e.target.className +" NUMBER: " + i + "\"",  "\"" + e.target.value + "\"", statementCount);
-    }
-    else {
-      // nodeName = INPUT
-      var i = 0;
-      var nodes = $(e.target.nodeName);
-      var length = nodes.length;
-      while(i < length) {
-        if(nodes.get(i) == e.target) {
-          break;
+      else {
+        // nodeName = INPUT
+        var i = 0;
+        var nodes = $(e.target.nodeName);
+        var length = nodes.length;
+        while(i < length) {
+          if(nodes.get(i) == e.target) {
+            break;
+          }
+          i++;
         }
         i++;
+        stmt = new Fill("FILL \"ATTRIBUTE: " + e.target.nodeName +" NUMBER: " + i + "\"", "\"" + e.target.value + "\"", statementCount);
       }
-      i++;
-      stmt = new Fill("FILL \"ATTRIBUTE: " + e.target.nodeName +" NUMBER: " + i + "\"", "\"" + e.target.value + "\"", statementCount);
-    }
-    statementCount++;
-    _selectedForm = e.target;
-    _selectedStmt = stmt.toDOM();
-    $('#gifby').get(0).appendChild(stmt.toDOM());
-});
-
-$('button').click(function(e) {
+      statementCount++;
+      _selectedForm = e.target;
+      _selectedStmt = stmt.toDOM();
+      $('#gifby').get(0).appendChild(stmt.toDOM());
+  }
+  else {
     if(_selectedForm != undefined) {
       updateFill(_selectedStmt, "\"" + _selectedForm.value + "\"");
     }
     _selectedForm = undefined;
     _selectedStmt = undefined;
     console.log(e.target);
-    if(!window.state.isRecording)
-        return;
-    if(e.target.id == 'record')
-        return;
     var stmt;
     if(e.target.id != "") {
       // Unique id for this object
