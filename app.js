@@ -10,6 +10,8 @@ var pending_request_id = null;
 var weGotAccess = weGotAccess ? true : false;
 var mediaRecorder = mediaRecorder ? mediaRecorder : null;
 
+window.state = {};
+
 function onAccessApproved(id) {
     if (!id) {
         console.log('Access rejected.');
@@ -83,5 +85,15 @@ chrome.runtime.onMessage.addListener(
         }
         if(request.cmd == 'stahp') {
             mediaRecorder.stop();
+        }
+        if(request.saveState){
+            window.state = JSON.parse(request.saveState);
+        }
+        if(request.getState){
+            chrome.tabs.query({active: true}, function(tabs){
+                console.log(tabs);
+                chrome.tabs.sendMessage(tabs[0].id, {state: JSON.stringify(window.state)},
+                function(response) {});
+            });
         }
   });
