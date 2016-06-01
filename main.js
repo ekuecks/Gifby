@@ -3,26 +3,18 @@ var _selectedStmt = undefined;
 const STATEMENT_ID_BASE = 'gifby_statement';
 var statementCount = 0;
 function saveState(){
-    chrome.storage.sync.set({'state':JSON.stringify(window.state)}, function (err){
+    chrome.runtime.sendMessage({saveState: JSON.stringify(window.state)}, function(response) {
     });
 }
 
-function restoreState(){
-    chrome.storage.sync.get('state', function (obj){
-        obj = obj.state;
-        //default settings
-        if(obj == undefined){
-            obj = {};
-            obj.sidebarOpen = false;
-            obj.recording = false;
-            obj = JSON.stringify(obj);
-        }
-        window.state = JSON.parse(obj);
-        if(window.state.sidebarOpen){
-            showSidebar();
-        }
+function getState(){
+    chrome.runtime.sendMessage({getState: true}, function(response) {
     });
 }
+
+setTimeout(function(){
+getState();
+}, 1000);
 
 class Fill {
   constructor(identifier, text, num) {
@@ -69,14 +61,13 @@ function updateFill(stmt, newText) {
   $('#' + stmt.id).get(0).innerHTML = stmt.innerHTML.substring(0, pos) + newText;
 }
 
-//restoreState();
 $('html').click(function(e){
     saveState();
 });
 
 setTimeout(function(){
 $('#record').click(function(){
-    window.state.isRecording = true;
+    window.state.isRecording = true; // we assume they select a screen
     chrome.runtime.sendMessage({cmd: "record"}, function(response) {
     });
 });
@@ -199,6 +190,11 @@ chrome.extension.onMessage.addListener(function(msg, sender, sendResponse) {
             <source src="`+msg.vidlink+`" type="video/webm">
         </video>
     `);
+  }
+  if(msg.state){
+    window.state = JSON.parse(msg.state);
+    window.state.count = window.state.count ? window.state.count + 1 : 1;
+    saveState();
   }
 });
 }, 1000);
