@@ -42,6 +42,19 @@ var O = new Language(g, g.semantics().addOperation('toAST', {
     }
   },
 
+  Stmt_select: function(_fill, str, text) {
+    str = str.interval.contents.substring(1, str.interval.contents.length - 1);
+    if(str.indexOf("ID:") > -1) {
+      return new SelectByID(str, text);
+    }
+    else if(str.indexOf("CLASS:") > -1) {
+      return new SelectByClass(str, text);
+    }
+    else {
+      return new SelectByAttribute(str, text);
+    }
+  },
+
   string: function(_oq, cs, _cq) {
     var chars = [];
     var idx = 0;

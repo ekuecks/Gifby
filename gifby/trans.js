@@ -36,6 +36,18 @@ FillByAttribute.prototype.trans = function() {
   return "$('" + this.attr +"').slice(" + this.pos + ", " + this.pos + " + 1).val(\"" + this.text + "\")";
 }
 
+SelectByID.prototype.trans = function() {
+  return "$('#" + this.id +"').val(\"" + this.text + "\")";
+}
+
+SelectByClass.prototype.trans = function() {
+  return "$('." + this.klass +"').slice(" + this.pos + ", " + this.pos + " + 1).val(\"" + this.text + "\")";
+}
+
+SelectByAttribute.prototype.trans = function() {
+  return "$('" + this.attr +"').slice(" + this.pos + ", " + this.pos + " + 1).val(\"" + this.text + "\")";
+}
+
 function trans(ast) {
   return ast.trans();
 }
