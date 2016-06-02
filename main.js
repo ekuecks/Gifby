@@ -93,6 +93,7 @@ function playVid(vidNum, time){
             <source src="`+window.state.vids[vidNum]+`#t=`+time+`" type="video/webm">
         </video>
     `);
+    var LOOP_LENGTH = 4000;
     window.loopy = setInterval(function(){
     $('#movie').html(`
         <a id='closeMovie'> Close </a><br>
@@ -100,7 +101,7 @@ function playVid(vidNum, time){
             <source src="`+window.state.vids[vidNum]+`#t=`+time+`" type="video/webm">
         </video>
     `);
-    }, 3000);
+    }, LOOP_LENGTH);
     $('#movie').show();
     $('#closeMovie').click(function(e){
         clearInterval(window.loopy);
