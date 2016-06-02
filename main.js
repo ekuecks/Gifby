@@ -142,15 +142,18 @@ function updateStmt(stmt, newText) {
       n++;
   }
   var vidpos = ($('#' + stmt.id).get(0).innerHTML).search('<a class ="plyV"');
-  var vidtag = ($('#' + stmt.id).get(0).innerHTML).substr(vidtag);
+  var vidtag = ($('#' + stmt.id).get(0).innerHTML).substr(vidpos);
+  var type = $('#' + stmt.id).get(0).innerHTML.split(' ')[0];
   console.log(stmt.innerHTML.substr(0, pos));
   // updating in memory
-  try{
-  window.state.cmds[_selectedFill.num] = _selectedFill;
-  } catch (e) {}
-  try{
-  window.state.cmds[_selectedSelect.num] = _selectedSelect;
-  } catch (e) {}
+  if(type == 'FILL'){
+    _selectedFill.text = _selectedFill.text + newText;
+    window.state.cmds[_selectedFill.num] = _selectedFill;
+  }
+  if(type == 'SELECT'){
+    _selectedSelect.text = _selectedSelect.text + newText;
+    window.state.cmds[_selectedSelect.num] = _selectedSelect;
+  }
   saveState();
   $('#' + stmt.id).get(0).innerHTML = stmt.innerHTML.substring(0, pos) + newText + vidtag;
 }
