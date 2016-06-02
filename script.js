@@ -14,12 +14,12 @@ window.state.sidebarOpen = false;
 
 /*Small function wich create a sidebar(just to illustrate my point)*/
 function toggleSidebar() {
-    if(window.state.sidebarOpen) {
-        hideSidebar();
-    }
-    else {
-        showSidebar();
-    }
+   // if(window.state.sidebarOpen) {
+   //     hideSidebar();
+   // }
+   // else {
+   //     showSidebar();
+   // }
 }
 
 function hideSidebar(){
