@@ -2,6 +2,7 @@ var _selectedForm = undefined;
 var _selectedSelect = undefined;
 var _selectedStmt = undefined;
 const STATEMENT_ID_BASE = 'gifby_statement';
+const IMG_ICON = 'http://imgur.com/jtBVq4Y.png';
 var statementCount = 0;
 function saveState(){
     chrome.runtime.sendMessage({saveState: JSON.stringify(window.state)}, function(response) {
@@ -15,6 +16,10 @@ function getState(){
 
 setTimeout(function(){
 getState();
+}, 500);
+
+setTimeout(function(){
+getState();
 }, 1000);
 
 class Fill {
@@ -22,12 +27,17 @@ class Fill {
     this.identifier = identifier;
     this.text = text;
     this.num = num;
+    this.vidNum = window.state.vids.length;
+    this.time = (new Date()).getTime() - window.state.started;
   }
 
   toDOM() {
     var div = document.createElement("div");
     div.id = STATEMENT_ID_BASE + this.num;
-    div.innerHTML = this.identifier + " " + this.text;
+    var vidNum = this.vidNum;
+    var time = this.time;
+    var openVid = '<a class ="plyV" id="'+vidNum+' '+time+'"><img src="'+IMG_ICON+'"></img></a>';
+    div.innerHTML = this.identifier + " " + this.text + openVid;
     return div;
   }
 }
@@ -36,12 +46,17 @@ class Click {
   constructor(identifier, num) {
     this.identifier = identifier;
     this.num = num;
+    this.vidNum = window.state.vids.length;
+    this.time = (new Date()).getTime() - window.state.started;
   }
 
   toDOM() {
     var div = document.createElement("div");
     div.id = STATEMENT_ID_BASE + this.num;
-    div.innerHTML = this.identifier;
+    var vidNum = this.vidNum;
+    var time = this.time;
+    var openVid = '<a class ="plyV" id="'+vidNum+' '+time+'"><img src="'+IMG_ICON+'"></img></a>';
+    div.innerHTML = this.identifier + " " + openVid;
     return div;
   }
 }
@@ -51,14 +66,46 @@ class Select {
     this.identifier = identifier;
     this.text = text;
     this.num = num;
+    this.vidNum = window.state.vids.length;
+    this.time = (new Date()).getTime() - window.state.started;
   }
 
   toDOM() {
     var div = document.createElement("div");
     div.id = STATEMENT_ID_BASE + this.num;
-    div.innerHTML = this.identifier + " " + this.text;
+    var vidNum = this.vidNum;
+    var time = this.time;
+    var openVid = '<a class ="plyV" id="'+vidNum+' '+time+'"><img src="'+IMG_ICON+'"></img></a>';
+    div.innerHTML = this.identifier + " " + this.text + openVid;
     return div;
   }
+}
+
+function playVid(vidNum, time){
+    clearInterval(window.loopy);
+    var time = time/1000; //convert to seconds
+    time -= 0.25;
+    if(time < 0)
+        time = 0;
+    $('#movie').html(`
+        <a id='closeMovie'> Close </a><br>
+        <video controls="" autoplay="" name="media" width="800" height = "400" loop>
+            <source src="`+window.state.vids[vidNum]+`#t=`+time+`" type="video/webm">
+        </video>
+    `);
+    window.loopy = setInterval(function(){
+    $('#movie').html(`
+        <a id='closeMovie'> Close </a><br>
+        <video controls="" autoplay="" name="media" width="800" height = "400" loop>
+            <source src="`+window.state.vids[vidNum]+`#t=`+time+`" type="video/webm">
+        </video>
+    `);
+    }, 3000);
+    $('#movie').show();
+    $('#closeMovie').click(function(e){
+        clearInterval(window.loopy);
+        $('#movie').hide()
+    });
 }
 
 function updateStmt(stmt, newText) {
@@ -81,6 +128,8 @@ setTimeout(function(){
 $('#record').click(function(){
     $('#indicator').html('Recording ...');
     window.state.isRecording = true; // we assume they select a screen
+    window.state.started = (new Date()).getTime();
+    saveState();
     chrome.runtime.sendMessage({cmd: "record"}, function(response) {
     });
 });
@@ -90,6 +139,8 @@ $('#stop').click(function(){
     chrome.runtime.sendMessage({cmd: "stahp"}, function(response) {
     });
     window.state.isRecording = false;
+    saveState();
+    getState();
 });
 }, 1000);
 
@@ -114,7 +165,7 @@ $('html').click(function(e){
     var stmt;
     if(e.target.id != "") {
       // Unique id for this object
-      stmt = new Fill("FILL \"ID: " + e.target.id +"\"", "\"" + e.target.value + "\"", statementCount);
+      stmt = new Fill("FILL \"ID: " + e.target.id +"\"", "\"" + e.target.value + "\"",statementCount);
     }
     else if(e.target.className != "") {
       var i = 0;
@@ -246,6 +297,12 @@ $('html').click(function(e){
     statementCount++;
     $('#gifby').get(0).appendChild(stmt.toDOM());
   }
+    $('.plyV').click(function(e){
+        console.log(e);
+        var vidNum = e.currentTarget.id.split(' ')[0];
+        var time   = e.currentTarget.id.split(' ')[1];
+        playVid(vidNum, time);
+    });
 });
 
 $('html').keydown( function(e) {
@@ -256,15 +313,13 @@ chrome.extension.onMessage.addListener(function(msg, sender, sendResponse) {
   console.log(msg);
   // a video is rdy
   if(msg.vidlink){
-    $("#vidshit").html($('#vidshit').html() + `
-        <video controls="" autoplay="" name="media" width="400" height = "300" loop>
-            <source src="`+msg.vidlink+`" type="video/webm">
-        </video>
-    `);
+    //$("#vidshit").html($('#vidshit').html() + `
+    //    <video controls="" autoplay="" name="media" width="400" height = "300" loop>
+    //        <source src="`+msg.vidlink+`" type="video/webm">
+    //    </video>
+    //`);
   }
   if(msg.state){
     window.state = JSON.parse(msg.state);
-    window.state.count = window.state.count ? window.state.count + 1 : 1;
-    saveState();
   }
 });

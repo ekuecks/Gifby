@@ -13,6 +13,9 @@ window.mainViewHtml = `
         <div id='vidshit'>
         </div>
 
+        <div id="movie">
+        </div>
+
         </div>
     </div>
 </div>
@@ -22,7 +25,7 @@ window.mainViewCss = `
     bottom:0px;
     left:0px;
     width:100%;
-    height:40%;
+    height:50%;
     background:white;
     border-style: solid;
     border-top: solid #000000;

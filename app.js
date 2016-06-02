@@ -11,7 +11,7 @@ var weGotAccess = weGotAccess ? true : false;
 var recording = false;
 var mediaRecorder = mediaRecorder ? mediaRecorder : null;
 
-window.state = {};
+window.state = {'vids':[]};
 
 function onAccessApproved(id) {
     if (!id) {
@@ -52,6 +52,7 @@ function onMediaSuccess(stream) {
 
         var blobURL = URL.createObjectURL(blob);
         var link=blobURL;
+        window.state.vids.push(link);
         var videoInfo="Compiled Video file size: " + Math.ceil(blob.size / 1024) + "KB";
 
         console.log(link);
