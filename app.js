@@ -11,7 +11,7 @@ var weGotAccess = weGotAccess ? true : false;
 var recording = false;
 var mediaRecorder = mediaRecorder ? mediaRecorder : null;
 
-window.state = {'vids':[]};
+window.state = {'vids':[], 'cmds':[]};
 
 function onAccessApproved(id) {
     if (!id) {

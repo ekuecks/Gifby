@@ -14,9 +14,7 @@ function getState(){
     });
 }
 
-setTimeout(function(){
-getState();
-}, 500);
+window.firstload = false;
 
 setTimeout(function(){
 getState();
@@ -24,11 +22,15 @@ getState();
 
 class Fill {
   constructor(identifier, text, num) {
+    this.type='Fill';
     this.identifier = identifier;
     this.text = text;
     this.num = num;
     this.vidNum = window.state.vids.length;
     this.time = (new Date()).getTime() - window.state.started;
+    if(identifier != 'nopush')
+        window.state.cmds.push(this);
+    saveState();
   }
 
   toDOM() {
@@ -44,10 +46,14 @@ class Fill {
 
 class Click {
   constructor(identifier, num) {
+    this.type='Click';
     this.identifier = identifier;
     this.num = num;
     this.vidNum = window.state.vids.length;
     this.time = (new Date()).getTime() - window.state.started;
+    if(identifier != 'nopush')
+        window.state.cmds.push(this);
+    saveState();
   }
 
   toDOM() {
@@ -63,11 +69,15 @@ class Click {
 
 class Select {
   constructor(identifier, text, num) {
+    this.type='Select';
     this.identifier = identifier;
     this.text = text;
     this.num = num;
     this.vidNum = window.state.vids.length;
     this.time = (new Date()).getTime() - window.state.started;
+    if(identifier != 'nopush')
+        window.state.cmds.push(this);
+    saveState();
   }
 
   toDOM() {
@@ -84,7 +94,7 @@ class Select {
 function playVid(vidNum, time){
     clearInterval(window.loopy);
     var time = time/1000; //convert to seconds
-    time -= 0.25;
+    time -= 1;
     if(time < 0)
         time = 0;
     $('#movie').html(`
@@ -322,5 +332,37 @@ chrome.extension.onMessage.addListener(function(msg, sender, sendResponse) {
   }
   if(msg.state){
     window.state = JSON.parse(msg.state);
+
+    if(window.firstload == false){
+        if(window.state.isRecording)
+            $('#indicator').html('Recording ...');
+        window.firstload = true;
+        setTimeout(function(){
+        for(var i = 0; i < window.state.cmds.length; i++){
+            var cmd = window.state.cmds[i];
+            console.log(cmd);
+            var newCmd = undefined;
+            if(cmd.type == 'Fill'){
+                newCmd = new Fill('nopush');
+            }
+            if(cmd.type == 'Click'){
+                newCmd = new Click('nopush');
+            }
+            if(cmd.type == 'Select'){
+                newCmd = new Select('nopush');
+            }
+            for(prop in cmd){
+                newCmd[prop] = cmd[prop];
+            }
+            $('#gifby').get(0).appendChild(newCmd.toDOM());
+            $('.plyV').click(function(e){
+                console.log(e);
+                var vidNum = e.currentTarget.id.split(' ')[0];
+                var time   = e.currentTarget.id.split(' ')[1];
+                playVid(vidNum, time);
+            });
+        }
+        }, 200);
+    }
   }
 });
