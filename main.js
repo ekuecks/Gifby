@@ -93,29 +93,37 @@ class Select {
 
 function playVid(vidNum, time){
     clearInterval(window.loopy);
+    $('#mySidebar').height(650);
     var time = time/1000; //convert to seconds
-    time -= 1;
+    time -= 1.5;
     if(time < 0)
         time = 0;
     $('#movie').html(`
         <a id='closeMovie'> Close </a><br>
-        <video controls="" autoplay="" name="media" width="800" height = "400" loop>
+        <video controls="" autoplay="" name="media" width="800" height = "600" loop>
             <source src="`+window.state.vids[vidNum]+`#t=`+time+`" type="video/webm">
         </video>
     `);
-    var LOOP_LENGTH = 4000;
+    var LOOP_LENGTH = 6000;
     window.loopy = setInterval(function(){
     $('#movie').html(`
         <a id='closeMovie'> Close </a><br>
-        <video controls="" autoplay="" name="media" width="800" height = "400" loop>
+        <video controls="" autoplay="" name="media" width="800" height = "600" loop>
             <source src="`+window.state.vids[vidNum]+`#t=`+time+`" type="video/webm">
         </video>
     `);
-    }, LOOP_LENGTH);
-    $('#movie').show();
     $('#closeMovie').click(function(e){
         clearInterval(window.loopy);
         $('#movie').hide()
+        $('#mySidebar').height(250);
+    });
+    }, LOOP_LENGTH);
+    $('#movie').show(1, function(){
+        $('#closeMovie').click(function(e){
+            clearInterval(window.loopy);
+            $('#movie').hide()
+            $('#mySidebar').height(250);
+        });
     });
 }
 

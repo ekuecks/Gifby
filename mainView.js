@@ -13,7 +13,7 @@ window.mainViewHtml = `
         <div id='vidshit'>
         </div>
 
-        <div id="movie">
+        <div id="movie" style='position:fixed; right: 10px;'>
         </div>
 
         </div>
@@ -25,7 +25,8 @@ window.mainViewCss = `
     bottom:0px;
     left:0px;
     width:100%;
-    height:50%;
+    height:250px;
+    overflow-y: scroll;
     background:white;
     border-style: solid;
     border-top: solid #000000;
