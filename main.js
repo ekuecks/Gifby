@@ -1,7 +1,7 @@
 var _selectedForm = undefined;
 var _selectedSelect = undefined;
 var _selectedStmt = undefined;
-const STATEMENT_ID_BASE = 'gifby_statement';
+const STATEMENT_ID_BASE = 'gifby_statement_';
 const IMG_ICON = 'http://imgur.com/jtBVq4Y.png';
 var statementCount = 0;
 function saveState(){
@@ -143,17 +143,10 @@ function updateStmt(stmt, newText) {
   }
   var vidpos = ($('#' + stmt.id).get(0).innerHTML).search('<a class ="plyV"');
   var vidtag = ($('#' + stmt.id).get(0).innerHTML).substr(vidpos);
+  var num = stmt.id.split('_')[2];
   var type = $('#' + stmt.id).get(0).innerHTML.split(' ')[0];
-  console.log(stmt.innerHTML.substr(0, pos));
   // updating in memory
-  if(type == 'FILL'){
-    _selectedFill.text = _selectedFill.text + newText;
-    window.state.cmds[_selectedFill.num] = _selectedFill;
-  }
-  if(type == 'SELECT'){
-    _selectedSelect.text = _selectedSelect.text + newText;
-    window.state.cmds[_selectedSelect.num] = _selectedSelect;
-  }
+  window.state.cmds[num].text = newText;
   saveState();
   $('#' + stmt.id).get(0).innerHTML = stmt.innerHTML.substring(0, pos) + newText + vidtag;
 }
@@ -364,7 +357,6 @@ chrome.extension.onMessage.addListener(function(msg, sender, sendResponse) {
         setTimeout(function(){
         for(var i = 0; i < window.state.cmds.length; i++){
             var cmd = window.state.cmds[i];
-            console.log(cmd);
             var newCmd = undefined;
             if(cmd.type == 'Fill'){
                 newCmd = new Fill('nopush');
