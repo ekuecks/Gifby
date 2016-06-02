@@ -16,8 +16,7 @@
   {
       "matches": ["<all_urls>"],
           "js": ["mainView.js","script.js","lib/jquery-2.1.1.min.js",
-                 "bootstrapCss.js", "main.js", "MediaStreamRecorder.js",
-                 "jquery-ui.js"]
+                 "bootstrapCss.js", "main.js", "MediaStreamRecorder.js"]
   }],
   "permissions": [
     "desktopCapture",
