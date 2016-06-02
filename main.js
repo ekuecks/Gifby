@@ -38,7 +38,8 @@ class Fill {
     div.id = STATEMENT_ID_BASE + this.num;
     var vidNum = this.vidNum;
     var time = this.time;
-    var openVid = '<a class ="plyV" id="'+vidNum+' '+time+'"><img src="'+IMG_ICON+'"></img></a>';
+    var openVid = '<a class ="plyV" id="'+vidNum+' '+time+' '+'10000'+
+                  '"><img src="'+IMG_ICON+'"></img></a>';
     div.innerHTML = this.identifier + " " + this.text + openVid;
     return div;
   }
@@ -61,7 +62,8 @@ class Click {
     div.id = STATEMENT_ID_BASE + this.num;
     var vidNum = this.vidNum;
     var time = this.time;
-    var openVid = '<a class ="plyV" id="'+vidNum+' '+time+'"><img src="'+IMG_ICON+'"></img></a>';
+    var openVid = '<a class ="plyV" id="'+vidNum+' '+time+' '+'6000'+
+                  '"><img src="'+IMG_ICON+'"></img></a>';
     div.innerHTML = this.identifier + " " + openVid;
     return div;
   }
@@ -85,17 +87,18 @@ class Select {
     div.id = STATEMENT_ID_BASE + this.num;
     var vidNum = this.vidNum;
     var time = this.time;
-    var openVid = '<a class ="plyV" id="'+vidNum+' '+time+'"><img src="'+IMG_ICON+'"></img></a>';
+    var openVid = '<a class ="plyV" id="'+vidNum+' '+time+' '+'7000'+
+                  '"><img src="'+IMG_ICON+'"></img></a>';
     div.innerHTML = this.identifier + " " + this.text + openVid;
     return div;
   }
 }
 
-function playVid(vidNum, time){
+function playVid(vidNum, time, loopLength){
     clearInterval(window.loopy);
     $('#mySidebar').height(650);
     var time = time/1000; //convert to seconds
-    time -= 1.5;
+    time -= 3;
     if(time < 0)
         time = 0;
     $('#movie').html(`
@@ -104,7 +107,6 @@ function playVid(vidNum, time){
             <source src="`+window.state.vids[vidNum]+`#t=`+time+`" type="video/webm">
         </video>
     `);
-    var LOOP_LENGTH = 6000;
     window.loopy = setInterval(function(){
     $('#movie').html(`
         <a id='closeMovie'> Close </a><br>
@@ -117,7 +119,7 @@ function playVid(vidNum, time){
         $('#movie').hide()
         $('#mySidebar').height(250);
     });
-    }, LOOP_LENGTH);
+    }, loopLength);
     $('#movie').show(1, function(){
         $('#closeMovie').click(function(e){
             clearInterval(window.loopy);
@@ -139,8 +141,18 @@ function updateStmt(stmt, newText) {
       }
       n++;
   }
+  var vidpos = ($('#' + stmt.id).get(0).innerHTML).search('<a class ="plyV"');
+  var vidtag = ($('#' + stmt.id).get(0).innerHTML).substr(vidtag);
   console.log(stmt.innerHTML.substr(0, pos));
-  $('#' + stmt.id).get(0).innerHTML = stmt.innerHTML.substring(0, pos) + newText;
+  // updating in memory
+  try{
+  window.state.cmds[_selectedFill.num] = _selectedFill;
+  } catch (e) {}
+  try{
+  window.state.cmds[_selectedSelect.num] = _selectedSelect;
+  } catch (e) {}
+  saveState();
+  $('#' + stmt.id).get(0).innerHTML = stmt.innerHTML.substring(0, pos) + newText + vidtag;
 }
 
 setTimeout(function(){
@@ -320,7 +332,8 @@ $('html').click(function(e){
         console.log(e);
         var vidNum = e.currentTarget.id.split(' ')[0];
         var time   = e.currentTarget.id.split(' ')[1];
-        playVid(vidNum, time);
+        var duration   = e.currentTarget.id.split(' ')[2];
+        playVid(vidNum, time, duration);
     });
 });
 
@@ -367,7 +380,8 @@ chrome.extension.onMessage.addListener(function(msg, sender, sendResponse) {
                 console.log(e);
                 var vidNum = e.currentTarget.id.split(' ')[0];
                 var time   = e.currentTarget.id.split(' ')[1];
-                playVid(vidNum, time);
+                var duration   = e.currentTarget.id.split(' ')[2];
+                playVid(vidNum, time, duration);
             });
         }
         }, 200);
