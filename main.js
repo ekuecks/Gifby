@@ -177,6 +177,7 @@ $('html').click(function(e){
   if(e.target.id == 'record')
     return;
   saveState();
+  window.state.homeUrl = document.location;
   if(e.target.nodeName == "INPUT") {
     if(_selectedForm != undefined) {
       updateStmt(_selectedStmt, "\"" + _selectedForm.value + "\"");
