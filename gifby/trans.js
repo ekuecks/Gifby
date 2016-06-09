@@ -51,3 +51,5 @@ SelectByAttribute.prototype.trans = function() {
 function trans(ast) {
   return ast.trans();
 }
+
+O.transAST = trans;

@@ -102,3 +102,11 @@ chrome.runtime.onMessage.addListener(
             });
         }
   });
+
+function daTranslate(src){
+    var L = O;
+    var matchResult = L.grammar.match(src);
+    var ast = L.semanticsForParsing(matchResult).toAST();
+    var code = L.transAST(ast);
+    return code;
+}
