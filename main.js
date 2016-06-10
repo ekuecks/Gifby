@@ -20,6 +20,30 @@ setTimeout(function(){
 getState();
 }, 1000);
 
+class Goto {
+  constructor(identifier, num) {
+    this.type='Goto';
+    this.identifier = identifier;
+    this.num = num;
+    this.vidNum = window.state.vids.length;
+    this.time = (new Date()).getTime() - window.state.started;
+    if(identifier != 'nopush')
+        window.state.cmds.push(this);
+    saveState();
+  }
+
+  toDOM() {
+    var div = document.createElement("div");
+    div.id = STATEMENT_ID_BASE + this.num;
+    var vidNum = this.vidNum;
+    var time = this.time;
+    var openVid = '<a class ="plyV" id="'+vidNum+' '+time+' '+'10000'+
+                  '"></a>';
+    div.innerHTML = this.identifier + openVid;
+    return div;
+  }
+}
+
 class Fill {
   constructor(identifier, text, num) {
     this.type='Fill';
@@ -156,6 +180,12 @@ $('#record').click(function(){
     $('#indicator').html('Recording ...');
     window.state.isRecording = true; // we assume they select a screen
     window.state.started = (new Date()).getTime();
+    stmt = new Goto("GOTO \"" + window.location.href + "\"", statementCount);
+    statementCount++;
+    _selectedSelect = undefined; 
+    _selectedStmt = undefined;
+    _selectedFill = undefined;
+    $('#gifby').get(0).appendChild(stmt.toDOM());
     saveState();
     chrome.runtime.sendMessage({cmd: "record"}, function(response) {
     });
@@ -374,6 +404,12 @@ chrome.extension.onMessage.addListener(function(msg, sender, sendResponse) {
   if(msg.state){
     window.state = JSON.parse(msg.state);
 
+    if(window.state.executing) {
+      state.executing = false;
+      saveState();
+      console.log(window.state.code);
+      eval(window.state.code);
+    }
     if(window.firstload == false){
         if(window.state.isRecording)
             $('#indicator').html('Recording ...');

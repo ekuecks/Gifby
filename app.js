@@ -95,11 +95,9 @@ chrome.runtime.onMessage.addListener(
           console.log(request.src);
           var code = daTranslate(request.src);
           console.log(code);
-          chrome.tabs.query({active: true}, function(tabs){
-              console.log(tabs);
-              chrome.tabs.sendMessage(tabs[0].id, {state: JSON.stringify(window.state), code: code, execute: true},
-              function(response) {});
-          });
+          var cmds = code.split(';');
+          console.log(cmds);
+          executeCommands(cmds, 0);
         }
         if(request.saveState){
             window.state = JSON.parse(request.saveState);
@@ -119,4 +117,15 @@ function daTranslate(src){
     var ast = L.semanticsForParsing(matchResult).toAST();
     var code = L.transAST(ast);
     return code;
+}
+
+function executeCommands(cmds, i) {
+  if(i < cmds.length) {
+    setTimeout(function() {chrome.tabs.query({active: true}, function(tabs){
+        console.log(tabs);
+        chrome.tabs.sendMessage(tabs[0].id, {state: JSON.stringify(window.state), code: cmds[i], execute: true},
+        function(response) {});
+    }) }, 3000 * i);
+    executeCommands(cmds, i + 1);
+  }
 }
