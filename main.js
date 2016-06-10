@@ -141,8 +141,8 @@ function updateStmt(stmt, newText) {
       }
       n++;
   }
-  var vidpos = ($('#' + stmt.id).get(0).innerHTML).search('<a class ="plyV"');
-  var vidtag = ($('#' + stmt.id).get(0).innerHTML).substr(vidpos);
+  var vidpos = stmt.innerHTML.indexOf('a class');
+  var vidtag = stmt.innerHTML.substr(vidpos - 1);
   var num = stmt.id.split('_')[2];
   var type = $('#' + stmt.id).get(0).innerHTML.split(' ')[0];
   // updating in memory
