@@ -3,7 +3,7 @@
 Program.prototype.trans = function() {
   var res = "";
   for(var s in this.ss) {
-    res += this.ss[s].trans() + ";";
+    res += "setTimeout(function() { " + this.ss[s].trans() + "}, " + 1000*s + ");";
   }
   return res;
 }
