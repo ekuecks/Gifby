@@ -382,6 +382,9 @@ chrome.extension.onMessage.addListener(function(msg, sender, sendResponse) {
         for(var i = 0; i < window.state.cmds.length; i++){
             var cmd = window.state.cmds[i];
             var newCmd = undefined;
+            if(cmd.type == 'Goto'){
+                newCmd = new Goto('nopush');
+            }
             if(cmd.type == 'Fill'){
                 newCmd = new Fill('nopush');
             }
