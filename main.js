@@ -246,24 +246,25 @@ $('html').click(function(e){
     }
     else if(e.target.className != "") {
       var i = 0;
-      var nodes = $("." + e.target.className);
+      var className = e.target.className.split(' ')[0];
+      var nodes = document.getElementsByClassName(className);
       var length = nodes.length;
       while(i < length) {
-        if(nodes.get(i) == e.target) {
+        if(nodes[i] == e.target) {
           break;
         }
         i++;
       }
       i++;
-      stmt = new Fill("FILL \"CLASS: " + e.target.className +" NUMBER: " + i + "\"",  "\"" + e.target.value + "\"", statementCount);
+      stmt = new Fill("FILL \"CLASS: " + className +" NUMBER: " + i + "\"",  "\"" + e.target.value + "\"", statementCount);
     }
     else {
       // nodeName = INPUT
       var i = 0;
-      var nodes = $(e.target.nodeName);
+      var nodes = document.getElementsByTagName(e.target.nodeName);
       var length = nodes.length;
       while(i < length) {
-        if(nodes.get(i) == e.target) {
+        if(nodes[i] == e.target) {
           break;
         }
         i++;
@@ -296,7 +297,8 @@ $('html').click(function(e){
     }
     else if(e.target.className != "") {
       var i = 0;
-      var nodes = $("." + e.target.className);
+      var className = e.target.className.split(' ')[0];
+      var nodes = document.getElementsByClassName(className);
       var length = nodes.length;
       while(i < length) {
         if(nodes.get(i) == e.target) {
@@ -305,15 +307,16 @@ $('html').click(function(e){
         i++;
       }
       i++;
-      stmt = new Select("SELECT \"CLASS: " + e.target.className +" NUMBER: " + i + "\"",  "\"" + e.target.value + "\"", statementCount);
+      stmt = new Select("SELECT \"CLASS: " + className +" NUMBER: " + i + "\"",  "\"" + e.target.value + "\"", statementCount);
     }
     else {
       // nodeName = INPUT
       var i = 0;
+      var nodes = document.getElementsByTagName(e.target.nodeName);
       var nodes = $(e.target.nodeName);
       var length = nodes.length;
       while(i < length) {
-        if(nodes.get(i) == e.target) {
+        if(nodes[i] == e.target) {
           break;
         }
         i++;
@@ -345,25 +348,26 @@ $('html').click(function(e){
     }
     else if(e.target.className != "") {
       var i = 0;
-      var nodes = $("." + e.target.className);
+      var className = e.target.className.split(' ')[0];
+      var nodes = document.getElementsByClassName(className);
       var length = nodes.length;
       
       while(i < length) {
-        if(nodes.get(i) == e.target) {
+        if(nodes[i] == e.target) {
           break;
         }
         i++;
       }
       i++;
-      stmt = new Click("CLICK \"CLASS: " + e.target.className +" NUMBER: " + i + "\"", statementCount);
+      stmt = new Click("CLICK \"CLASS: " + className +" NUMBER: " + i + "\"", statementCount);
     }
     else {
       // nodeName = BUTTON
       var i = 0;
-      var nodes = $(e.target.nodeName);
+      var nodes = document.getElementsByTagName(e.target.nodeName);
       var length = nodes.length;
       while(i < length) {
-        if(nodes.get(i) == e.target) {
+        if(nodes[i] == e.target) {
           break;
         }
         i++;
@@ -398,8 +402,9 @@ chrome.extension.onMessage.addListener(function(msg, sender, sendResponse) {
     //`);
   }
   if(msg.execute){
+    console.log($('.yt-uix-sessionlink.t-uix-tile-link.t-ui-ellipsis.t-ui-ellipsis-2.pf-link').slice(0,1));
     console.log(msg.code);
-    eval(msg.code);
+    new Function(msg.code)();
   }
   if(msg.state){
     window.state = JSON.parse(msg.state);

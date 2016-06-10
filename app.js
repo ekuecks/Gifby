@@ -121,11 +121,12 @@ function daTranslate(src){
 
 function executeCommands(cmds, i) {
   if(i < cmds.length) {
+    console.log(cmds[i]);
     setTimeout(function() {chrome.tabs.query({active: true}, function(tabs){
         console.log(tabs);
         chrome.tabs.sendMessage(tabs[0].id, {state: JSON.stringify(window.state), code: cmds[i], execute: true},
         function(response) {});
-    }) }, 3000 * i);
+    }) }, 5000 * i);
     executeCommands(cmds, i + 1);
   }
 }

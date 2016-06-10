@@ -14,39 +14,39 @@ Goto.prototype.trans = function() {
 }
 
 ClickByID.prototype.trans = function() {
-  return "$('#" + this.id +"').trigger('click')";
+  return "document.getElementById('" + this.id +"').click()";
 }
 
 ClickByClass.prototype.trans = function() {
-  return "$('." + this.klass +"').slice(" + this.pos + ", " + this.pos + " + 1).trigger('click')";
+  return "document.getElementsByClassName('" + this.klass +"')[" + this.pos + "].click()";
 }
 
 ClickByAttribute.prototype.trans = function() {
-  return "$('" + this.attr +"').slice(" + this.pos + ", " + this.pos + " + 1).trigger('click')";
+  return "document.getElementsByTagName('" + this.attr +"')[" + this.pos + "].click()";
 }
 
 FillByID.prototype.trans = function() {
-  return "$('#" + this.id +"').val(\"" + this.text + "\")";
+  return "document.getElementById('" + this.id +"').value = '" + this.text + "'";
 }
 
 FillByClass.prototype.trans = function() {
-  return "$('." + this.klass +"').slice(" + this.pos + ", " + this.pos + " + 1).val(\"" + this.text + "\")";
+  return "document.getElementsByClassName('" + this.klass +"')[" + this.pos + "].value = '" + this.text + "'";
 }
 
 FillByAttribute.prototype.trans = function() {
-  return "$('" + this.attr +"').slice(" + this.pos + ", " + this.pos + " + 1).val(\"" + this.text + "\")";
+  return "document.getElementsByTagName('" + this.attr +"')[" + this.pos + "].value = '" + this.text + "'";
 }
 
 SelectByID.prototype.trans = function() {
-  return "$('#" + this.id +"').val(\"" + this.text + "\")";
+  return "document.getElementById('" + this.id +"').value = '" + this.text + "'";
 }
 
 SelectByClass.prototype.trans = function() {
-  return "$('." + this.klass +"').slice(" + this.pos + ", " + this.pos + " + 1).val(\"" + this.text + "\")";
+  return "document.getElementsByClassName('" + this.klass +"')[" + this.pos + "].value = '" + this.text + "'";
 }
 
 SelectByAttribute.prototype.trans = function() {
-  return "$('" + this.attr +"').slice(" + this.pos + ", " + this.pos + " + 1).val(\"" + this.text + "\")";
+  return "document.getElementsByTagName('" + this.attr +"')[" + this.pos + "].value = '" + this.text + "'";
 }
 
 function trans(ast) {
