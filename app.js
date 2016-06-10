@@ -91,6 +91,16 @@ chrome.runtime.onMessage.addListener(
         if(request.cmd == 'stahp') {
             mediaRecorder.stop();
         }
+        if(request.cmd == "execute") {
+          console.log(request.src);
+          var code = daTranslate(request.src);
+          console.log(code);
+          chrome.tabs.query({active: true}, function(tabs){
+              console.log(tabs);
+              chrome.tabs.sendMessage(tabs[0].id, {state: JSON.stringify(window.state), code: code, execute: true},
+              function(response) {});
+          });
+        }
         if(request.saveState){
             window.state = JSON.parse(request.saveState);
         }

@@ -6,6 +6,7 @@ window.mainViewHtml = `
         <span style='position:fixed; right: 10px'>
             <button class='button-error pure-button' id='record'>Record</button>
             <button class='pure-button' id='stop'>Stop</button>
+            <button class='pure-button' id='execute'>Execute</button>
         </span>
         </div>
         <div id='scriptcontetn' class="pure-g">

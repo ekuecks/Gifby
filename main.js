@@ -161,6 +161,25 @@ $('#record').click(function(){
     });
 });
 
+$('#execute').click(function(){
+  var nodes = $('#gifby').get(0).childNodes
+  console.log(nodes);
+  var src = "";
+  for (var i = 0; i < nodes.length; i++) {
+    var node = nodes[i];
+    console.log(node);
+    if(node.id && node.id.substring(0,15) == 'gifby_statement') {
+      var text = node.innerHTML;
+      var stop = text.indexOf('<a class="plyV"');
+      console.log(node.innerHTML.substring(0, stop));
+      src += node.innerHTML.substring(0, stop) + "\n";
+    }
+  }
+  console.log(src);
+  chrome.runtime.sendMessage({cmd: "execute", src: src}, function(response) {
+});
+});
+
 $('#stop').click(function(){
     $('#indicator').html('');
     chrome.runtime.sendMessage({cmd: "stahp"}, function(response) {
@@ -347,6 +366,10 @@ chrome.extension.onMessage.addListener(function(msg, sender, sendResponse) {
     //        <source src="`+msg.vidlink+`" type="video/webm">
     //    </video>
     //`);
+  }
+  if(msg.execute){
+    console.log(msg.code);
+    eval(msg.code);
   }
   if(msg.state){
     window.state = JSON.parse(msg.state);
